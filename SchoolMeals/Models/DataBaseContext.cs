@@ -14,7 +14,7 @@ namespace SchoolMeals.Models
         public DataBaseContext(DbContextOptions<DataBaseContext> options)
             :base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

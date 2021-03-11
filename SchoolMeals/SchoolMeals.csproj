@@ -12,5 +12,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Sql\" />
+    <Folder Include="wwwroot\images\dishes\min\" />
+    <Folder Include="wwwroot\images\dishes\middle\" />
+    <Folder Include="wwwroot\images\dishes\max\" />
+  </ItemGroup>
+
 
 </Project>
