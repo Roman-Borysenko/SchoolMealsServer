@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SchoolMeals.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/{action}")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -19,10 +19,10 @@ namespace SchoolMeals.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        [HttpPost]
-        public async Task<JsonResult> GetAll()
+        public async Task<JsonResult> GetAll(string lang = "ua")
         {
-            return new JsonResult(await _categoryRepository.GetByFilterAsync(c => c.Categories.Count > 0, c => c.Categories));
+            return new JsonResult(await _categoryRepository.GetByFilterAsync(c => c.CategoryId == null 
+                                    && c.Language.NameAbbreviation.Equals(lang.ToUpper()), c => c.Categories, c => c.Language));
         }
     }
 }

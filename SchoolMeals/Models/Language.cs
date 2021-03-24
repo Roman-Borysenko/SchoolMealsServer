@@ -13,6 +13,7 @@ namespace SchoolMeals.Models
         public string NameAbbreviation { get; set; }
         [Required, StringLength(16, MinimumLength = 2)]
         public string Slug { get; set; }
+        public bool Default { get; set; }
         public List<Dish> Dishes { get; set; }
         public List<Ingredient> Ingredients { get; set; }
         public List<Tag> Tags { get; set; }

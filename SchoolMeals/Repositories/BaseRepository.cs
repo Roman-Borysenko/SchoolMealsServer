@@ -15,8 +15,8 @@ namespace SchoolMeals.Repositories
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         private DataBaseContext _context;
-        private DbSet<TEntity> _dbSet;
         private ILogger _logger;
+        protected DbSet<TEntity> _dbSet;
         public BaseRepository(ILogger<BaseRepository<TEntity>> logger, DataBaseContext context)
         {
             _context = context;
@@ -60,7 +60,7 @@ namespace SchoolMeals.Repositories
 
             try
             {
-                data = await _dbSet.MultiInclude(properties).Where(predicate).Order(order, orderType).AsQueryable().AsNoTracking().ToListAsync();
+                data = await _dbSet.MultiInclude(properties).Where(predicate).Order(order, orderType).AsNoTracking().ToListAsync();
             } catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace);
@@ -75,8 +75,40 @@ namespace SchoolMeals.Repositories
 
             try
             {
-                data = await _dbSet.MultiInclude(properties).Where(predicate).AsQueryable().AsNoTracking().ToListAsync();
+                data = await _dbSet.MultiInclude(properties).Where(predicate).AsNoTracking().ToListAsync();
             } catch (Exception ex)
+            {
+                _logger.LogError($"{ex.Message}\n{ex.StackTrace}");
+            }
+
+            return data;
+        }
+
+        public async Task<IEnumerable<TEntity>> GetByFilterAsync<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> order, OrderType orderType, int skip, int take, params Expression<Func<TEntity, object>>[] properties)
+        {
+            IEnumerable<TEntity> data = null;
+
+            try
+            {
+                data = await _dbSet.MultiInclude(properties).Where(predicate).Order(order, orderType).Skip(skip).Take(take).AsNoTracking().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+            }
+
+            return data;
+        }
+
+        public async Task<IEnumerable<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> predicate, int skip, int take, params Expression<Func<TEntity, object>>[] properties)
+        {
+            IEnumerable<TEntity> data = null;
+
+            try
+            {
+                data = await _dbSet.MultiInclude(properties).Where(predicate).Skip(skip).Take(take).AsNoTracking().ToListAsync();
+            }
+            catch (Exception ex)
             {
                 _logger.LogError($"{ex.Message}\n{ex.StackTrace}");
             }

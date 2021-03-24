@@ -10,8 +10,8 @@ using SchoolMeals.Models;
 namespace SchoolMeals.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20210307155702_DatabaseInitialization")]
-    partial class DatabaseInitialization
+    [Migration("20210314112114_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,6 +63,9 @@ namespace SchoolMeals.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -87,6 +90,9 @@ namespace SchoolMeals.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

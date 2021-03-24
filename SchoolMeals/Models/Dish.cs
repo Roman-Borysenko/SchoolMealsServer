@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace SchoolMeals.Models
 {
@@ -25,9 +27,13 @@ namespace SchoolMeals.Models
         public int LanguageId { get; set; }
         [ForeignKey("LanguageId")]
         public Language Language { get; set; }
-        //public List<Ingredient> Ingredients { get; set; }
-        //public List<Tag> Tags { get; set; }
         public List<DishTag> DishTags { get; set; }
         public List<DishIngredient> DishIngredients { get; set; }
+        public DateTime CreateAt { get; set; }
+        public DateTime UpdateAt { get; set; }
+        [NotMapped]
+        public List<Ingredient> Ingredients { get; set; }
+        [NotMapped]
+        public List<Tag> Tags { get; set; }
     }
 }

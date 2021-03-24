@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace SchoolMeals.Extensions
 {
-    public static class EF
+    public static class EfExtension
     {
         public static IQueryable<TEntity> MultiInclude<TEntity>(this IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[] properties) where TEntity : class
         {
@@ -22,14 +22,5 @@ namespace SchoolMeals.Extensions
 
             return query.OrderBy(order);
         }
-        //public static IOrderedEnumerable<TEntity> Order<TEntity, TKey>(this IEnumerable<TEntity> query, Func<TEntity, TKey> order, OrderType orderType) where TEntity : class
-        //{
-        //    if (orderType == OrderType.Desc)
-        //    {
-        //        return query.OrderByDescending(order);
-        //    }
-
-        //    return query.OrderBy(order);
-        //}
     }
 }
