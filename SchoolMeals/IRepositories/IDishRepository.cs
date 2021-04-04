@@ -13,5 +13,6 @@ namespace SchoolMeals.IRepositories
         Task<IEnumerable<Dish>> GetDishesAsync<TKey>(Expression<Func<Dish, bool>> predicate, Expression<Func<Dish, TKey>> order, OrderType orderType, int skip, int take);
         Task<IEnumerable<Dish>> GetDishesAsync(Expression<Func<Dish, bool>> predicate);
         Task<IEnumerable<Dish>> GetDishesAsync(Expression<Func<Dish, bool>> predicate, int skip, int take);
+        Task<Dish> GetDishAsync(Expression<Func<Dish, bool>> predicate);
     }
 }

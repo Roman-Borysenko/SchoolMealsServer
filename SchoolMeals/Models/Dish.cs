@@ -32,6 +32,8 @@ namespace SchoolMeals.Models
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
         [NotMapped]
+        public string[] DishUrlSections { get; set; }
+        [NotMapped]
         public List<Ingredient> Ingredients { get; set; }
         [NotMapped]
         public List<Tag> Tags { get; set; }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SchoolMeals.Attributes;
 using SchoolMeals.Enums;
 using SchoolMeals.IRepositories;
 using SchoolMeals.Models;
+using SchoolMeals.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +21,22 @@ namespace SchoolMeals.Controllers
         {
             _repository = repository;
         }
-        public async Task<JsonResult> GetByCategory(string categorySlug, string lang = "ua")
+        [CorrectUrl]
+        public async Task<JsonResult> GetByCategory(string categorySlug, string subcategorySlug, int skip = 0, int take = 10, string lang = "ua")
         {
-            // TODO: add skip and take params
-            return new JsonResult(await _repository.GetDishesAsync(d => d.Category.Slug.Equals(categorySlug) && d.Language.NameAbbreviation.Equals(lang.ToUpper()), 
-                d => d.CreateAt, OrderType.Desc));
+            return new JsonResult(await _repository.GetDishesAsync(d => d.Category.Slug.Equals(string.IsNullOrEmpty(subcategorySlug) ? categorySlug : subcategorySlug) 
+                && d.Language.NameAbbreviation.Equals(lang.ToUpper()), 
+                d => d.CreateAt, OrderType.Desc, skip, take));
+        }
+        [HttpPost]
+        public async Task<JsonResult> GetByFilter(DishFilterRequest request)
+        {
+            // TODO: rewrite
+            return new JsonResult(await _repository.GetDishesAsync(d => 
+                d.Category.Slug.Equals(string.IsNullOrEmpty(request.SubcategorySlug) ? request.CategorySlug : request.SubcategorySlug)
+                && d.Language.NameAbbreviation.Equals(request.Lang.ToUpper())
+                && (request.IngredientsIds.Count() > 0 ? d.DishIngredients.Any(di => request.IngredientsIds.Contains(di.IngredientId)) : true),
+                d => d.CreateAt, OrderType.Desc, request.Skip, request.Take));
         }
         public async Task<JsonResult> GetNewDishes(int take, string lang = "ua")
         {
@@ -34,6 +47,21 @@ namespace SchoolMeals.Controllers
         {
             return new JsonResult(await _repository.GetDishesAsync(d => d.Language.NameAbbreviation.Equals(lang.ToUpper()) && d.IsRecommend == true, 
                 d => d.CreateAt, OrderType.Desc, 0, take));
+        }
+        public async Task<JsonResult> GetRecommendedDishesFromCategory(string categorySlug, int take, string lang = "ua")
+        {
+            return new JsonResult(await _repository.GetDishesAsync(d => d.Language.NameAbbreviation.Equals(lang.ToUpper()) 
+                && d.Category.Slug.Equals(categorySlug)
+                && d.IsRecommend == true,
+                d => d.CreateAt, OrderType.Desc, 0, take));
+        }
+        public async Task<JsonResult> GetDish(string categorySlug, string subcategorySlug, string dishSlug, string lang = "ua")
+        {
+            //TODO: write a method to check if a subcategory is correct
+            return new JsonResult(await _repository.GetDishAsync(d => ((!string.IsNullOrEmpty(subcategorySlug) && !subcategorySlug.Equals("dish")) ? d.Category.ParentCategory.Slug.Equals(categorySlug) : true)
+                && d.Category.Slug.Equals((!string.IsNullOrEmpty(subcategorySlug) && !subcategorySlug.Equals("dish")) ? subcategorySlug : categorySlug)
+                && d.Slug.Equals(dishSlug) 
+                && d.Language.NameAbbreviation.Equals(lang.ToUpper())));
         }
     }
 }

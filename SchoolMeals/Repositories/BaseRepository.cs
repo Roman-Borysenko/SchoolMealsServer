@@ -14,9 +14,9 @@ namespace SchoolMeals.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        private DataBaseContext _context;
-        private ILogger _logger;
+        protected DataBaseContext _context;
         protected DbSet<TEntity> _dbSet;
+        protected ILogger _logger;
         public BaseRepository(ILogger<BaseRepository<TEntity>> logger, DataBaseContext context)
         {
             _context = context;
@@ -48,7 +48,7 @@ namespace SchoolMeals.Repositories
                 data = await _dbSet.MultiInclude(properties).Order(order, orderType).AsQueryable().AsNoTracking().ToListAsync();
             } catch(Exception ex)
             {
-                _logger.LogError(ex.StackTrace);
+                _logger.LogError(ex.ShowError());
             }
 
             return data;
@@ -63,7 +63,7 @@ namespace SchoolMeals.Repositories
                 data = await _dbSet.MultiInclude(properties).Where(predicate).Order(order, orderType).AsNoTracking().ToListAsync();
             } catch(Exception ex)
             {
-                _logger.LogError(ex.StackTrace);
+                _logger.LogError(ex.ShowError());
             }
 
             return data;
@@ -78,7 +78,7 @@ namespace SchoolMeals.Repositories
                 data = await _dbSet.MultiInclude(properties).Where(predicate).AsNoTracking().ToListAsync();
             } catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message}\n{ex.StackTrace}");
+                _logger.LogError(ex.ShowError());
             }
 
             return data;
@@ -94,7 +94,7 @@ namespace SchoolMeals.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.StackTrace);
+                _logger.LogError(ex.ShowError());
             }
 
             return data;
@@ -110,7 +110,7 @@ namespace SchoolMeals.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{ex.Message}\n{ex.StackTrace}");
+                _logger.LogError(ex.ShowError());
             }
 
             return data;

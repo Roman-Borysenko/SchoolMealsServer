@@ -8,9 +8,9 @@ namespace SchoolMeals.Extensions
 {
     public static class StringExtension
     {
-        public static string ImageUrl(this string image, SectionSite sectionSite, ImageSize size)
+        public static string ImageUrl(this string image, SectionSite sectionSite, params ImageSize[] sizes)
         {
-            return $"images/{sectionSite.ToString().ToLower()}/{size.ToString().ToLower()}/{image}";
+            return string.Join("|", sizes.Select(s => $"images/{sectionSite.ToString().ToLower()}/{s.ToString().ToLower()}/{image}"));
         }
     }
 }

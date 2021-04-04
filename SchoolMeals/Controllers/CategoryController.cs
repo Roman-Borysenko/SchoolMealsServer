@@ -19,7 +19,7 @@ namespace SchoolMeals.Controllers
         {
             _categoryRepository = categoryRepository;
         }
-        public async Task<JsonResult> GetAll(string lang = "ua")
+        public async Task<JsonResult> GetMainCategories(string lang = "ua")
         {
             return new JsonResult(await _categoryRepository.GetByFilterAsync(c => c.CategoryId == null 
                                     && c.Language.NameAbbreviation.Equals(lang.ToUpper()), c => c.Categories, c => c.Language));

@@ -13,6 +13,8 @@ namespace SchoolMeals.Models
         [Required, StringLength(16, MinimumLength = 2)]
         public string Slug { get; set; }
         public int? CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public Category ParentCategory { get; set; }
         [Required]
         public int LanguageId { get; set; }
         [ForeignKey("LanguageId")]
