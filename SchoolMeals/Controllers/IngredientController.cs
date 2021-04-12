@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SchoolMeals.IRepositories;
 using SchoolMeals.Models;
 using System.Threading.Tasks;
 
 namespace SchoolMeals.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/{action}")]
     [ApiController]
     public class IngredientController : ControllerBase

@@ -1,17 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMeals.Attributes;
 using SchoolMeals.Enums;
 using SchoolMeals.IRepositories;
-using SchoolMeals.Models;
 using SchoolMeals.Requests;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SchoolMeals.Controllers
 {
+    [Authorize]
     [Route("api/[controller]/{action}")]
     [ApiController]
     public class DishController : ControllerBase

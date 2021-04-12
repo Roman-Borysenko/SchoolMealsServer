@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace SchoolMeals.Models
 {
-    public class DataBaseContext : DbContext
+    public class DataBaseContext : IdentityDbContext<User>
     {
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
@@ -11,7 +12,7 @@ namespace SchoolMeals.Models
         public DbSet<Language> Languages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
-        public DataBaseContext(DbContextOptions<DataBaseContext> options)
+        public DataBaseContext(DbContextOptions options)
             :base(options)
         {
             //Database.EnsureDeleted();
@@ -26,6 +27,8 @@ namespace SchoolMeals.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Dish>()
                 .HasOne(p => p.Language)
                 .WithMany(t => t.Dishes)

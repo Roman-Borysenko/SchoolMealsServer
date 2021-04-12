@@ -1,19 +1,20 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using SchoolMeals.Interfaces;
 using SchoolMeals.IRepositories;
 using SchoolMeals.Models;
 using SchoolMeals.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SchoolMeals.Services;
+using System.Text;
 
 namespace SchoolMeals
 {
@@ -38,8 +39,29 @@ namespace SchoolMeals
             services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<DataBaseContext>();
 
+            services.TryAddSingleton<ISystemClock, SystemClock>();
+
+            services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false).AddSignInManager()
+                .AddEntityFrameworkStores<DataBaseContext>()
+                .AddSignInManager<SignInManager<User>>();
+
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Token")));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateLifetime = true
+                };
+            });
+
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IDishRepository, DishRepository>();
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,9 +78,10 @@ namespace SchoolMeals
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

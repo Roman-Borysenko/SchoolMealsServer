@@ -48,7 +48,6 @@ C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\runt
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\obj\Debug\netcoreapp3.1\SchoolMeals.csprojAssemblyReference.cache
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\obj\Debug\netcoreapp3.1\SchoolMeals.AssemblyInfoInputs.cache
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\obj\Debug\netcoreapp3.1\SchoolMeals.AssemblyInfo.cs
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\obj\Debug\netcoreapp3.1\SchoolMeals.csproj.CoreCompileInputs.cache
@@ -64,3 +63,10 @@ C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\obj\Debug\netcoreapp3.1\Scho
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\obj\Debug\netcoreapp3.1\SchoolMeals.csprojAssemblyReference.cache
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
