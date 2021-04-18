@@ -31,6 +31,8 @@ namespace SchoolMeals.Models
         public List<DishIngredient> DishIngredients { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
+
+        /*--Properties for response--*/
         [NotMapped]
         public string[] DishUrlSections { get; set; }
         [NotMapped]

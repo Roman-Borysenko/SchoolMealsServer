@@ -10,6 +10,7 @@
     public enum SectionSite
     {
         Dishes,
-        Blog
+        Blog,
+        Slider
     }
 }

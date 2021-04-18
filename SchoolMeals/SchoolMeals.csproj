@@ -17,9 +17,11 @@
 
   <ItemGroup>
     <Folder Include="Sql\" />
+    <Folder Include="wwwroot\images\blog\min\" />
     <Folder Include="wwwroot\images\dishes\min\" />
     <Folder Include="wwwroot\images\dishes\midd\" />
     <Folder Include="wwwroot\images\dishes\max\" />
+    <Folder Include="wwwroot\images\slider\" />
   </ItemGroup>
 
 

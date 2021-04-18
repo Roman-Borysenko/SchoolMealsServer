@@ -12,6 +12,9 @@ namespace SchoolMeals.Models
         public DbSet<Language> Languages { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<DishIngredient> DishIngredients { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<Slide> Slides { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DataBaseContext(DbContextOptions options)
             :base(options)
         {

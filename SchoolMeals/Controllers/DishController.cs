@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolMeals.Attributes;
 using SchoolMeals.Enums;
 using SchoolMeals.IRepositories;
+using SchoolMeals.Models;
 using SchoolMeals.Requests;
+using SchoolMeals.Responses;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -59,7 +61,7 @@ namespace SchoolMeals.Controllers
             //TODO: write a method to check if a subcategory is correct
             return new JsonResult(await _repository.GetDishAsync(d => ((!string.IsNullOrEmpty(subcategorySlug) && !subcategorySlug.Equals("dish")) ? d.Category.ParentCategory.Slug.Equals(categorySlug) : true)
                 && d.Category.Slug.Equals((!string.IsNullOrEmpty(subcategorySlug) && !subcategorySlug.Equals("dish")) ? subcategorySlug : categorySlug)
-                && d.Slug.Equals(dishSlug) 
+                && d.Slug.Equals(dishSlug)
                 && d.Language.NameAbbreviation.Equals(lang.ToUpper())));
         }
     }

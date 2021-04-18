@@ -10,7 +10,7 @@ namespace SchoolMeals.IRepositories
     public interface IBaseRepository<TEntity> where TEntity : class
     {
         TEntity Create(TEntity entity);
-        TEntity FindById(int id);
+        Task<TEntity> FindByFilter(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] properties);
         Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] properties);
         Task<IEnumerable<TEntity>> GetAllAsync<TKey>(Expression<Func<TEntity, TKey>> order, OrderType orderType, params Expression<Func<TEntity, object>>[] properties);
         Task<IEnumerable<TEntity>> GetByFilterAsync<TKey>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TKey>> order, OrderType orderType, params Expression<Func<TEntity, object>>[] properties);

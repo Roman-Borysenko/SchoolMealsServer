@@ -29,9 +29,19 @@ namespace SchoolMeals.Repositories
             throw new NotImplementedException();
         }
 
-        public TEntity FindById(int id)
+        public async Task<TEntity> FindByFilter(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] properties)
         {
-            throw new NotImplementedException();
+            TEntity entity = null;
+
+            try
+            {
+                entity = await _dbSet.MultiInclude(properties).SingleOrDefaultAsync(predicate);
+            } catch(Exception ex)
+            {
+                _logger.LogError(ex.ShowError());
+            }
+
+            return entity;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] properties)
