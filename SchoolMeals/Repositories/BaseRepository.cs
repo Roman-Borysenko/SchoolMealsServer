@@ -24,11 +24,21 @@ namespace SchoolMeals.Repositories
 
             _logger = logger;
         }
-        public TEntity Create(TEntity entity)
+        public async Task<int> Count(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] properties)
         {
-            throw new NotImplementedException();
-        }
+            int count = 0;
 
+            try
+            {
+                count = await _dbSet.MultiInclude(properties).Where(predicate).CountAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ShowError());
+            }
+
+            return count;
+        }
         public async Task<TEntity> FindByFilter(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] properties)
         {
             TEntity entity = null;
@@ -126,19 +136,46 @@ namespace SchoolMeals.Repositories
             return data;
         }
 
-        public void Remove(TEntity entity)
+        public async Task<TEntity> Create(TEntity entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _dbSet.AddAsync(entity);
+                await _context.SaveChangesAsync();
+
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ShowError());
+                return null;
+            }
         }
 
-        public void Remove(int id)
+        public async Task Remove(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.RemoveRange(await _dbSet.Where(predicate).ToArrayAsync());
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ShowError());
+            }
         }
 
-        public TEntity Update(TEntity entity)
+        public async Task Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _dbSet.Update(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ShowError());
+            }
         }
     }
 }

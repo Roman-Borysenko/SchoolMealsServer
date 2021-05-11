@@ -62,7 +62,8 @@ namespace SchoolMeals
             services.AddScoped<IDishRepository, DishRepository>();
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-            services.AddScoped<IModelSchema, ModelSchema>();
+            services.AddScoped<IModelScheme, ModelSchema>();
+            services.AddScoped<AdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

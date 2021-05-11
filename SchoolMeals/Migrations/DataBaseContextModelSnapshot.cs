@@ -158,7 +158,6 @@ namespace SchoolMeals.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreateAt")
@@ -173,7 +172,6 @@ namespace SchoolMeals.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
@@ -218,7 +216,6 @@ namespace SchoolMeals.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
@@ -237,6 +234,9 @@ namespace SchoolMeals.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -265,7 +265,6 @@ namespace SchoolMeals.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -273,6 +272,8 @@ namespace SchoolMeals.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryId");
 
@@ -344,7 +345,6 @@ namespace SchoolMeals.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
@@ -422,7 +422,6 @@ namespace SchoolMeals.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ButtonLink")
@@ -451,6 +450,10 @@ namespace SchoolMeals.Migrations
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -485,7 +488,6 @@ namespace SchoolMeals.Migrations
                         .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
@@ -625,9 +627,7 @@ namespace SchoolMeals.Migrations
                 {
                     b.HasOne("SchoolMeals.Models.User", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("SchoolMeals.Models.Language", "Language")
                         .WithMany()
@@ -659,6 +659,10 @@ namespace SchoolMeals.Migrations
 
             modelBuilder.Entity("SchoolMeals.Models.Dish", b =>
                 {
+                    b.HasOne("SchoolMeals.Models.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("SchoolMeals.Models.Category", "Category")
                         .WithMany("Dishes")
                         .HasForeignKey("CategoryId")
@@ -670,6 +674,8 @@ namespace SchoolMeals.Migrations
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
 
                     b.Navigation("Category");
 
@@ -748,9 +754,7 @@ namespace SchoolMeals.Migrations
                 {
                     b.HasOne("SchoolMeals.Models.User", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("SchoolMeals.Models.Language", "Language")
                         .WithMany()

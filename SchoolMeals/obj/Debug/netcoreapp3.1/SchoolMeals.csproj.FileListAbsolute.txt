@@ -70,3 +70,9 @@ C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Micr
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\obj\Debug\netcoreapp3.1\SchoolMeals.csprojAssemblyReference.cache
 C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\SlugGenerator.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\romab\source\repos\SchoolMeals\SchoolMeals\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
