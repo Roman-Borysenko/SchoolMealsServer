@@ -21,13 +21,18 @@ namespace SchoolMeals.Services
         }
         public string CreateToken(User user)
         {
+            List<Claim> claims = new List<Claim> 
+            {
+                new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email)
+            };
+
+            if (!string.IsNullOrEmpty(user.RoleName))
+                claims.Add(new Claim(ClaimTypes.Role, user.RoleName));
+
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email)
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
                 SigningCredentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature)
             };

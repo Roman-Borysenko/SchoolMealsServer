@@ -41,13 +41,19 @@ namespace SchoolMeals
 
             services.TryAddSingleton<ISystemClock, SystemClock>();
 
-            services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false).AddSignInManager()
+            services.AddIdentity<User, IdentityRole>(options => { options.SignIn.RequireConfirmedAccount = false; })
+                .AddSignInManager()
                 .AddEntityFrameworkStores<DataBaseContext>()
-                .AddSignInManager<SignInManager<User>>();
+                .AddSignInManager<SignInManager<User>>()
+                .AddDefaultTokenProviders();
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Token")));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt => {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

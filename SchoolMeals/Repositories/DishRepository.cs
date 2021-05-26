@@ -57,6 +57,11 @@ namespace SchoolMeals.Repositories
                     Id = dt.Tag.Id,
                     Name = dt.Tag.Name,
                     Slug = dt.Tag.Slug
+                }).ToList(),
+                DiseaseDishes = d.DiseaseDishes.Select(dd => new DiseaseDish { 
+                    Id = dd.Id,
+                    DishId = dd.DishId,
+                    DiseaseId = dd.DiseaseId
                 }).ToList()
             };
         }
@@ -76,6 +81,7 @@ namespace SchoolMeals.Repositories
                     .Include(d => d.Language)
                     .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                     .Include(d => d.DishTags).ThenInclude(dt => dt.Tag)
+                    .Include(d => d.DiseaseDishes)
                     .Where(predicate)
                     .Select(SelectDish(ImageSize.Min))
                     .Order(order, orderType).ToListAsync();
@@ -97,6 +103,7 @@ namespace SchoolMeals.Repositories
                     .Include(d => d.Language)
                     .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                     .Include(d => d.DishTags).ThenInclude(dt => dt.Tag)
+                    .Include(d => d.DiseaseDishes)
                     .Where(predicate)
                     .Select(SelectDish(ImageSize.Min))
                     .Order(order, orderType).Skip(skip).Take(take).ToListAsync();
@@ -118,6 +125,7 @@ namespace SchoolMeals.Repositories
                     .Include(d => d.Language)
                     .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                     .Include(d => d.DishTags).ThenInclude(dt => dt.Tag)
+                    .Include(d => d.DiseaseDishes)
                     .Where(predicate)
                     .Select(SelectDish(ImageSize.Min))
                     .ToListAsync();
@@ -139,6 +147,7 @@ namespace SchoolMeals.Repositories
                     .Include(d => d.Language)
                     .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                     .Include(d => d.DishTags).ThenInclude(dt => dt.Tag)
+                    .Include(d => d.DiseaseDishes)
                     .Where(predicate)
                     .Select(SelectDish(ImageSize.Min))
                     .Skip(skip).Take(take).ToListAsync();
@@ -160,6 +169,7 @@ namespace SchoolMeals.Repositories
                     .Include(d => d.Language)
                     .Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient)
                     .Include(d => d.DishTags).ThenInclude(dt => dt.Tag)
+                    .Include(d => d.DiseaseDishes)
                     .Where(predicate).Select(SelectDish(ImageSize.Midd, ImageSize.Max)).SingleOrDefaultAsync();
             } catch(Exception ex)
             {

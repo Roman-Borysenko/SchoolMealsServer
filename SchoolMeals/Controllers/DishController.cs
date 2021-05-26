@@ -24,14 +24,22 @@ namespace SchoolMeals.Controllers
         private IDishRepository _repository;
         private IBaseRepository<DishTag> _tag;
         private IBaseRepository<DishIngredient> _ingredient;
+        private IBaseRepository<DiseaseDish> _diseas;
         private AdminService _adminService;
-        public DishController(IDishRepository repository, IBaseRepository<DishTag> tag, IBaseRepository<DishIngredient> ingredient, AdminService adminService)
+        public DishController(
+            IDishRepository repository, 
+            IBaseRepository<DishTag> tag, 
+            IBaseRepository<DishIngredient> ingredient,
+            IBaseRepository<DiseaseDish> diseas,
+            AdminService adminService)
         {
             _repository = repository;
             _tag = tag;
             _ingredient = ingredient;
+            _diseas = diseas;
             _adminService = adminService;
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         [HttpPost]
         public async Task<IActionResult> Create(RecordRequest<Dish> data)
         {
@@ -53,11 +61,13 @@ namespace SchoolMeals.Controllers
 
             newDish.DishIngredients = dish.IngredientsIds.Select(i => new DishIngredient { DishId = newDish.Id, IngredientId = i }).ToList();
             newDish.DishTags = dish.TagsIds.Select(i => new DishTag { DishId = newDish.Id, TagId = i }).ToList();
+            newDish.DiseaseDishes = dish.DiseaseIds.Select(i => new DiseaseDish { DishId = newDish.Id, DiseaseId = i }).ToList();
 
             await _repository.Update(newDish);
 
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         [HttpPost]
         public async Task<IActionResult> Update(RecordRequest<Dish> data)
         {
@@ -71,41 +81,48 @@ namespace SchoolMeals.Controllers
 
             await _tag.Remove(t => t.DishId == dish.Id);
             await _ingredient.Remove(t => t.DishId == dish.Id);
+            await _diseas.Remove(t => t.DishId == dish.Id);
 
             dish.Slug = dish.Name.GenerateSlug();
             dish.Image = _adminService.GetImageName(data.Images, dish.Image, SectionSite.Dishes);
             dish.DishIngredients = dish.IngredientsIds.Select(i => new DishIngredient { DishId = dish.Id, IngredientId = i }).ToList();
             dish.DishTags = dish.TagsIds.Select(i => new DishTag { DishId = dish.Id, TagId = i }).ToList();
+            dish.DiseaseDishes = dish.DiseaseIds.Select(i => new DiseaseDish { DishId = dish.Id, DiseaseId = i }).ToList();
             dish.UpdateAt = DateTime.Now;
 
             await _repository.Update(dish);
 
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.Remove(c => c.Id == id);
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         [HttpGet]
         public async Task<JsonResult> Get(string slug)
         {
             Dish dishes = new Dish
             {
                 IngredientsIds = new List<int>(),
-                TagsIds = new List<int>()
+                TagsIds = new List<int>(),
+                DiseaseIds = new List<int>()
             };
 
             if (slug != "model")
             {
-                dishes = await _repository.FindByFilter(c => c.Slug.Equals(slug.ToLower()), d => d.DishIngredients, d => d.DishTags);
+                dishes = await _repository.FindByFilter(c => c.Slug.Equals(slug.ToLower()), d => d.DishIngredients, d => d.DishTags, d => d.DiseaseDishes);
                 dishes.Image = dishes.Image.ImageUrl(SectionSite.Dishes, ImageSize.Min, ImageSize.Midd, ImageSize.Max);
                 dishes.IngredientsIds = dishes.DishIngredients.Select(d => d.IngredientId).ToList();
                 dishes.TagsIds = dishes.DishTags.Select(d => d.TagId).ToList();
+                dishes.DiseaseIds = dishes.DiseaseDishes.Select(d => d.DiseaseId).ToList();
             }
 
             return new JsonResult(dishes);
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<JsonResult> GetForAdmin(int skip, int take, string lang = "ua")
         {
             DataAndQuantity<IEnumerable<Dish>> result = new DataAndQuantity<IEnumerable<Dish>>
@@ -119,19 +136,30 @@ namespace SchoolMeals.Controllers
         [CorrectUrl]
         public async Task<JsonResult> GetByCategory(string categorySlug, string subcategorySlug, int skip = 0, int take = 10, string lang = "ua")
         {
-            return new JsonResult(await _repository.GetDishesAsync(d => d.Category.Slug.Equals(string.IsNullOrEmpty(subcategorySlug) ? categorySlug : subcategorySlug) 
+            return new JsonResult(await _repository.GetDishesAsync(d => string.IsNullOrEmpty(subcategorySlug) ? d.Category.ParentCategory.Slug.Equals(categorySlug) || d.Category.Slug.Equals(categorySlug) : d.Category.Slug.Equals(subcategorySlug)
                 && d.Language.NameAbbreviation.Equals(lang.ToUpper()), 
                 d => d.CreateAt, OrderType.Desc, skip, take));
+
+            //return new JsonResult(await _repository.GetDishesAsync(d => d.Category.Slug.Equals(string.IsNullOrEmpty(subcategorySlug) ? categorySlug : subcategorySlug)
+            //    && d.Language.NameAbbreviation.Equals(lang.ToUpper()),
+            //    d => d.CreateAt, OrderType.Desc, skip, take));
         }
         [HttpPost]
         public async Task<JsonResult> GetByFilter(DishFilterRequest request)
         {
             // TODO: rewrite
-            return new JsonResult(await _repository.GetDishesAsync(d => 
-                d.Category.Slug.Equals(string.IsNullOrEmpty(request.SubcategorySlug) ? request.CategorySlug : request.SubcategorySlug)
+            return new JsonResult(await _repository.GetDishesAsync(d =>
+                string.IsNullOrEmpty(request.SubcategorySlug) ? d.Category.ParentCategory.Slug.Equals(request.CategorySlug) || d.Category.Slug.Equals(request.CategorySlug) : d.Category.Slug.Equals(request.SubcategorySlug)
                 && d.Language.NameAbbreviation.Equals(request.Lang.ToUpper())
                 && (request.IngredientsIds.Count() > 0 ? d.DishIngredients.Any(di => request.IngredientsIds.Contains(di.IngredientId)) : true),
                 d => d.CreateAt, OrderType.Desc, request.Skip, request.Take));
+        }
+        public async Task<JsonResult> GetRecommendedDishesFotUser(int take, string lang = "ua")
+        {
+            IEnumerable<int> userDiseases = _adminService.GetUserDiseases(HttpContext);
+
+            return new JsonResult(await _repository.GetDishesAsync(d => d.Language.NameAbbreviation.Equals(lang.ToUpper()) && d.DiseaseDishes.Any(di => userDiseases.Contains(di.DiseaseId)),
+                d => d.CreateAt, OrderType.Desc, 0, take));
         }
         public async Task<JsonResult> GetNewDishes(int take, string lang = "ua")
         {

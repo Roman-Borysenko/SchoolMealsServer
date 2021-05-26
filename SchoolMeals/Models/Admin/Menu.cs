@@ -6,6 +6,7 @@ namespace SchoolMeals.Models.Admin
     {
         public string Name { get; set; }
         public string Slug { get; set; }
+        public List<string> Roles { get; set; }
         public Dictionary<string, Dictionary<string, string>> Urls { get; set; }
     }
 }

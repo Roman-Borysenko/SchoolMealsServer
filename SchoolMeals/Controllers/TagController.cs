@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolMeals.Enums;
 using SchoolMeals.IRepositories;
 using SchoolMeals.Models;
 using SchoolMeals.Responses;
@@ -21,6 +22,7 @@ namespace SchoolMeals.Controllers
             _repository = repository;
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Create(Tag tag)
         {
             tag.Slug = tag.Name.GenerateSlug();
@@ -28,29 +30,33 @@ namespace SchoolMeals.Controllers
             return new JsonResult(result);
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Update(Tag tag)
         {
             tag.Slug = tag.Name.GenerateSlug();
             await _repository.Update(tag);
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.Remove(c => c.Id == id);
             return Ok();
         }
         [HttpGet]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<JsonResult> Get(string slug)
         {
-            Tag ingredient = new Tag();
+            Tag tag = new Tag();
 
             if (slug != "model")
             {
-                ingredient = await _repository.FindByFilter(c => c.Slug.Equals(slug.ToLower()));
+                tag = await _repository.FindByFilter(c => c.Slug.Equals(slug.ToLower()));
             }
 
-            return new JsonResult(ingredient);
+            return new JsonResult(tag);
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<JsonResult> GetForAdmin(int skip, int take, string lang = "ua")
         {
             DataAndQuantity<IEnumerable<Tag>> result = new DataAndQuantity<IEnumerable<Tag>>

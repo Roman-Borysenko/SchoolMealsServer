@@ -29,6 +29,7 @@ namespace SchoolMeals.Controllers
             _repository = repository;
             _adminService = adminService;
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         [HttpPost]
         public async Task<IActionResult> Create(RecordRequest<Article> data)
         {
@@ -43,6 +44,7 @@ namespace SchoolMeals.Controllers
 
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         [HttpPost]
         public async Task<IActionResult> Update(RecordRequest<Article> data)
         {
@@ -60,6 +62,7 @@ namespace SchoolMeals.Controllers
             await _repository.Remove(c => c.Id == id);
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         [HttpGet]
         public async Task<JsonResult> Get(string slug)
         {
@@ -73,6 +76,7 @@ namespace SchoolMeals.Controllers
 
             return new JsonResult(articles);
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         public async Task<JsonResult> GetForAdmin(int skip, int take, string lang = "ua")
         {
             DataAndQuantity<IEnumerable<Article>> result = new DataAndQuantity<IEnumerable<Article>>

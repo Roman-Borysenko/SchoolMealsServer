@@ -11,5 +11,8 @@ namespace SchoolMeals.Models
         [StringLength(32, MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [StringLength(32, MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
     }
 }

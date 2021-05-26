@@ -18,6 +18,7 @@ namespace SchoolMeals.IRepositories
         Task<IEnumerable<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> predicate, params Expression<Func<TEntity, object>>[] properties);
         Task<IEnumerable<TEntity>> GetByFilterAsync(Expression<Func<TEntity, bool>> predicate, int skip, int take, params Expression<Func<TEntity, object>>[] properties);
         Task<TEntity> Create(TEntity entity);
+        Task<IEnumerable<TEntity>> CreateRange(IEnumerable<TEntity> entities);
         Task Update(TEntity entity);
         Task Remove(Expression<Func<TEntity, bool>> predicate);
     }

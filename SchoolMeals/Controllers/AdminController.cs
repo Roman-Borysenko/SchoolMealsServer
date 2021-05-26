@@ -5,10 +5,11 @@ using SchoolMeals.Interfaces;
 using SchoolMeals.Models.Admin;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace SchoolMeals.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = RolesTypes.Admin+","+ RolesTypes.Nutritionist+","+RolesTypes.Teacher + "," + RolesTypes.Director + "," + RolesTypes.HeadTeacher + "," + RolesTypes.CookingService)]
     [Route("api/[controller]/{action}")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -20,7 +21,9 @@ namespace SchoolMeals.Controllers
         }
         public JsonResult GetAdminMenu()
         {
-            return new JsonResult(_scheme.Schemes.Select(s => new Menu 
+            string role = User.FindFirstValue(ClaimTypes.Role);
+
+            return new JsonResult(_scheme.Schemes.Where(s => s.Roles.Contains(role)).Select(s => new Menu 
             { 
                 Name = s.Name, 
                 Slug = s.Slug

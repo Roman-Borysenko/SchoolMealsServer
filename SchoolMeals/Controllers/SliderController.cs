@@ -27,6 +27,7 @@ namespace SchoolMeals.Controllers
             _adminService = adminService;
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         public async Task<IActionResult> Create(RecordRequest<Slide> data)
         {
             Slide slide = data.Data;
@@ -41,6 +42,7 @@ namespace SchoolMeals.Controllers
             return Ok();
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         public async Task<IActionResult> Update(RecordRequest<Slide> data)
         {
             Slide slide = data.Data;
@@ -52,12 +54,14 @@ namespace SchoolMeals.Controllers
 
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.Remove(c => c.Id == id);
             return Ok();
         }
         [HttpGet]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         public async Task<JsonResult> Get(string slug)
         {
             Slide slides = new Slide();
@@ -70,6 +74,7 @@ namespace SchoolMeals.Controllers
 
             return new JsonResult(slides);
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
         public async Task<JsonResult> GetForAdmin(int skip, int take, string lang = "ua")
         {
             DataAndQuantity<IEnumerable<Slide>> result = new DataAndQuantity<IEnumerable<Slide>>

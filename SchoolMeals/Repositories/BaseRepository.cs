@@ -152,6 +152,22 @@ namespace SchoolMeals.Repositories
             }
         }
 
+        public async Task<IEnumerable<TEntity>> CreateRange(IEnumerable<TEntity> entities)
+        {
+            try
+            {
+                await _dbSet.AddRangeAsync(entities);
+                await _context.SaveChangesAsync();
+
+                return entities;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ShowError());
+                return null;
+            }
+        }
+
         public async Task Remove(Expression<Func<TEntity, bool>> predicate)
         {
             try

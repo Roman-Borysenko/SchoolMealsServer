@@ -18,5 +18,6 @@ namespace SchoolMeals.Models
         public List<Ingredient> Ingredients { get; set; }
         public List<Tag> Tags { get; set; }
         public List<Category> Categories { get; set; }
+        public List<Disease> Diseases { get; set; }
     }
 }

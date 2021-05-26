@@ -49,6 +49,7 @@ namespace SchoolMeals.Services
             {
                 Name = "Категорії",
                 Slug = "Category",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.Nutritionist },
                 Urls = new Dictionary<string, Dictionary<string, string>> 
                 {
                     { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/category/getforadmin" }, { "Delete", "api/category/delete" } } },
@@ -60,6 +61,7 @@ namespace SchoolMeals.Services
             {
                 Name = "Інградієнти",
                 Slug = "Ingredient",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.Nutritionist },
                 Urls = new Dictionary<string, Dictionary<string, string>>
                 {
                     { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/ingredient/getforadmin" }, { "Delete", "api/ingredient/delete" } } },
@@ -71,6 +73,7 @@ namespace SchoolMeals.Services
             {
                 Name = "Теги",
                 Slug = "Tag",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.Nutritionist },
                 Urls = new Dictionary<string, Dictionary<string, string>>
                 {
                     { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/tag/getforadmin" }, { "Delete", "api/tag/delete" } } },
@@ -82,6 +85,7 @@ namespace SchoolMeals.Services
             {
                 Name = "Блог",
                 Slug = "Article",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.HeadTeacher },
                 Urls = new Dictionary<string, Dictionary<string, string>>
                 {
                     { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/blog/getforadmin" }, { "Delete", "api/blog/delete" } } },
@@ -93,6 +97,7 @@ namespace SchoolMeals.Services
             {
                 Name = "Слайдер",
                 Slug = "Slide",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.HeadTeacher },
                 Urls = new Dictionary<string, Dictionary<string, string>>
                 {
                     { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/slider/getforadmin" }, { "Delete", "api/slider/delete" } } },
@@ -104,11 +109,59 @@ namespace SchoolMeals.Services
             {
                 Name = "Страви",
                 Slug = "Dish",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.Nutritionist },
                 Urls = new Dictionary<string, Dictionary<string, string>>
                 {
                     { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/dish/getforadmin" }, { "Delete", "api/dish/delete" } } },
                     { AdminOperations.Edit, new Dictionary<string, string> { { "Get", "api/dish/get" }, { "Send", "api/dish/update" } } },
                     { AdminOperations.Add, new Dictionary<string, string> { { "Get", "api/dish/get" }, { "Send", "api/dish/create" } } }
+                }
+            },
+            new Menu
+            {
+                Name = "Захворювання",
+                Slug = "Disease",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.HeadTeacher, RolesTypes.Nutritionist },
+                Urls = new Dictionary<string, Dictionary<string, string>>
+                {
+                    { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/disease/getforadmin" }, { "Delete", "api/disease/delete" } } },
+                    { AdminOperations.Edit, new Dictionary<string, string> { { "Get", "api/disease/get" }, { "Send", "api/disease/update" } } },
+                    { AdminOperations.Add, new Dictionary<string, string> { { "Get", "api/disease/get" }, { "Send", "api/disease/create" } } }
+                }
+            },
+            new Menu
+            {
+                Name = "Статуси замовлення",
+                Slug = "OrderStatus",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.HeadTeacher, RolesTypes.CookingService },
+                Urls = new Dictionary<string, Dictionary<string, string>>
+                {
+                    { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/orderstatus/getforadmin" }, { "Delete", "api/orderstatus/delete" } } },
+                    { AdminOperations.Edit, new Dictionary<string, string> { { "Get", "api/orderstatus/get" }, { "Send", "api/orderstatus/update" } } },
+                    { AdminOperations.Add, new Dictionary<string, string> { { "Get", "api/orderstatus/get" }, { "Send", "api/orderstatus/create" } } }
+                }
+            },
+            new Menu
+            {
+                Name = "Користувачі",
+                Slug = "User",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.HeadTeacher },
+                Urls = new Dictionary<string, Dictionary<string, string>>
+                {
+                    { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/user/getforadmin" }, { "Delete", "api/user/delete" } } },
+                    { AdminOperations.Edit, new Dictionary<string, string> { { "Get", "api/user/get" }, { "Send", "api/user/update" } } },
+                    { AdminOperations.Add, new Dictionary<string, string> { { "Get", "api/user/get" }, { "Send", "api/user/create" } } }
+                }
+            },
+            new Menu
+            {
+                Name = "Замовлення",
+                Slug = "Order",
+                Roles = new List<string> { RolesTypes.Admin, RolesTypes.HeadTeacher, RolesTypes.CookingService },
+                Urls = new Dictionary<string, Dictionary<string, string>>
+                {
+                    { AdminOperations.Show, new Dictionary<string, string> { { "Get", "api/order/getforadmin" }, { "Delete", "api/order/delete" } } },
+                    { AdminOperations.Edit, new Dictionary<string, string> { { "Get", "api/order/get" }, { "Send", "api/order/update" } } }
                 }
             }
         };

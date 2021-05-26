@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SchoolMeals.Enums;
 using SchoolMeals.IRepositories;
 using SchoolMeals.Models;
 using SchoolMeals.Responses;
@@ -20,6 +21,7 @@ namespace SchoolMeals.Controllers
             _repository = repository;
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Create(Ingredient ingredient)
         {
             ingredient.Slug = ingredient.Name.GenerateSlug();
@@ -27,18 +29,21 @@ namespace SchoolMeals.Controllers
             return new JsonResult(result);
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Update(Ingredient ingredient)
         {
             ingredient.Slug = ingredient.Name.GenerateSlug();
             await _repository.Update(ingredient);
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.Remove(c => c.Id == id);
             return Ok();
         }
         [HttpGet]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<JsonResult> Get(string slug)
         {
             Ingredient ingredient = new Ingredient();
@@ -50,6 +55,7 @@ namespace SchoolMeals.Controllers
 
             return new JsonResult(ingredient);
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<JsonResult> GetForAdmin(int skip, int take, string lang = "ua")
         {
             DataAndQuantity<IEnumerable<Ingredient>> result = new DataAndQuantity<IEnumerable<Ingredient>>

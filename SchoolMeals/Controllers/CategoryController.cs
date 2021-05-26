@@ -24,6 +24,7 @@ namespace SchoolMeals.Controllers
             _categoryRepository = categoryRepository;
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Create(Category category)
         {
             category.Slug = category.Name.GenerateSlug();
@@ -31,18 +32,21 @@ namespace SchoolMeals.Controllers
             return new JsonResult(result);
         }
         [HttpPost]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Update(Category category)
         {
             category.Slug = category.Name.GenerateSlug();
             await _categoryRepository.Update(category);
             return Ok();
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<IActionResult> Delete(int id)
         {
             await _categoryRepository.Remove(c => c.Id == id);
             return Ok();
         }
         [HttpGet]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<JsonResult> Get(string slug)
         {
             Category category = new Category();
@@ -54,6 +58,7 @@ namespace SchoolMeals.Controllers
 
             return new JsonResult(category);
         }
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist)]
         public async Task<JsonResult> GetForAdmin(int skip, int take, string lang = "ua")
         {
             DataAndQuantity<IEnumerable<Category>> result = new DataAndQuantity<IEnumerable<Category>>

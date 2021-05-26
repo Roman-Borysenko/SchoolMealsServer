@@ -51,6 +51,7 @@ namespace SchoolMeals.Models
         public User Author { get; set; }
         public List<DishTag> DishTags { get; set; }
         public List<DishIngredient> DishIngredients { get; set; }
+        public List<DiseaseDish> DiseaseDishes { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
 
@@ -61,6 +62,8 @@ namespace SchoolMeals.Models
         public List<Ingredient> Ingredients { get; set; }
         [NotMapped]
         public List<Tag> Tags { get; set; }
+        [NotMapped]
+        public List<Disease> Diseases { get; set; }
         [NotMapped, Required]
         [DataType(CustomDataType.Multiselect)]
         [DisplayForm(Name = "Інградієнти", RelatedData = "api/ingredient/getall")]
@@ -69,5 +72,9 @@ namespace SchoolMeals.Models
         [DataType(CustomDataType.Multiselect)]
         [DisplayForm(Name = "Теги", RelatedData = "api/tag/getall")]
         public List<int> TagsIds { get; set; }
+        [NotMapped, Required]
+        [DataType(CustomDataType.Multiselect)]
+        [DisplayForm(Name = "Рекомендовано при захворюваннях", RelatedData = "api/disease/getall")]
+        public List<int> DiseaseIds { get; set; }
     }
 }

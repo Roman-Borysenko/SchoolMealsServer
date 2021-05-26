@@ -7,5 +7,6 @@
         public const string Image = "Image";
         public const string CheckBox = "CheckBox";
         public const string Multiselect = "Multiselect";
+        public const string Disable = "Disable";
     }
 }

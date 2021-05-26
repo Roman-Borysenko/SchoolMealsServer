@@ -228,6 +228,77 @@ namespace SchoolMeals.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("SchoolMeals.Models.Disease", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("Diseases");
+                });
+
+            modelBuilder.Entity("SchoolMeals.Models.DiseaseDish", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DishId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiseaseId");
+
+                    b.HasIndex("DishId");
+
+                    b.ToTable("DiseaseDishes");
+                });
+
+            modelBuilder.Entity("SchoolMeals.Models.DiseaseUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DiseaseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiseaseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DiseaseUsers");
+                });
+
             modelBuilder.Entity("SchoolMeals.Models.Dish", b =>
                 {
                     b.Property<int>("Id")
@@ -402,6 +473,9 @@ namespace SchoolMeals.Migrations
                     b.Property<int>("DishId")
                         .HasColumnType("int");
 
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -411,7 +485,43 @@ namespace SchoolMeals.Migrations
 
                     b.HasIndex("DishId");
 
+                    b.HasIndex("OrderStatusId");
+
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("SchoolMeals.Models.OrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("CanDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("SchoolMeals.Models.Slide", b =>
@@ -520,11 +630,19 @@ namespace SchoolMeals.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Firstname")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Middlename")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -537,6 +655,9 @@ namespace SchoolMeals.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("PasswordIsChanged")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -546,11 +667,15 @@ namespace SchoolMeals.Migrations
                     b.Property<DateTime>("ReceiptDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -657,6 +782,55 @@ namespace SchoolMeals.Migrations
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("SchoolMeals.Models.Disease", b =>
+                {
+                    b.HasOne("SchoolMeals.Models.Language", "Language")
+                        .WithMany("Diseases")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("SchoolMeals.Models.DiseaseDish", b =>
+                {
+                    b.HasOne("SchoolMeals.Models.Disease", "Disease")
+                        .WithMany("DiseaseDishes")
+                        .HasForeignKey("DiseaseId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolMeals.Models.Dish", "Dish")
+                        .WithMany("DiseaseDishes")
+                        .HasForeignKey("DishId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Disease");
+
+                    b.Navigation("Dish");
+                });
+
+            modelBuilder.Entity("SchoolMeals.Models.DiseaseUser", b =>
+                {
+                    b.HasOne("SchoolMeals.Models.Disease", "Disease")
+                        .WithMany("DiseaseUsers")
+                        .HasForeignKey("DiseaseId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolMeals.Models.User", "User")
+                        .WithMany("DiseaseUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Disease");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SchoolMeals.Models.Dish", b =>
                 {
                     b.HasOne("SchoolMeals.Models.User", "Author")
@@ -734,7 +908,7 @@ namespace SchoolMeals.Migrations
             modelBuilder.Entity("SchoolMeals.Models.Order", b =>
                 {
                     b.HasOne("SchoolMeals.Models.User", "Author")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -745,9 +919,28 @@ namespace SchoolMeals.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SchoolMeals.Models.OrderStatus", "OrderStatus")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
 
                     b.Navigation("Dishes");
+
+                    b.Navigation("OrderStatus");
+                });
+
+            modelBuilder.Entity("SchoolMeals.Models.OrderStatus", b =>
+                {
+                    b.HasOne("SchoolMeals.Models.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("SchoolMeals.Models.Slide", b =>
@@ -785,8 +978,17 @@ namespace SchoolMeals.Migrations
                     b.Navigation("Dishes");
                 });
 
+            modelBuilder.Entity("SchoolMeals.Models.Disease", b =>
+                {
+                    b.Navigation("DiseaseDishes");
+
+                    b.Navigation("DiseaseUsers");
+                });
+
             modelBuilder.Entity("SchoolMeals.Models.Dish", b =>
                 {
+                    b.Navigation("DiseaseDishes");
+
                     b.Navigation("DishIngredients");
 
                     b.Navigation("DishTags");
@@ -801,6 +1003,8 @@ namespace SchoolMeals.Migrations
                 {
                     b.Navigation("Categories");
 
+                    b.Navigation("Diseases");
+
                     b.Navigation("Dishes");
 
                     b.Navigation("Ingredients");
@@ -808,9 +1012,21 @@ namespace SchoolMeals.Migrations
                     b.Navigation("Tags");
                 });
 
+            modelBuilder.Entity("SchoolMeals.Models.OrderStatus", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
             modelBuilder.Entity("SchoolMeals.Models.Tag", b =>
                 {
                     b.Navigation("DishTags");
+                });
+
+            modelBuilder.Entity("SchoolMeals.Models.User", b =>
+                {
+                    b.Navigation("DiseaseUsers");
+
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
