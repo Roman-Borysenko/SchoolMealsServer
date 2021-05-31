@@ -54,6 +54,7 @@ namespace SchoolMeals.Controllers
             try
             {
                 await _userManager.CreateAsync(user, "Schoolmeals1.");
+                await _userManager.AddToRoleAsync(user, RolesTypes.Admin);
             } catch (Exception e)
             {
                 _logger.LogError(e.ShowError());
