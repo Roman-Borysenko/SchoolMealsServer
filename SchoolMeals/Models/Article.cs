@@ -38,7 +38,7 @@ namespace SchoolMeals.Models
         public User Author { get; set; }
         [Required, Range(1, 1000000)]
         [DataType(CustomDataType.List)]
-        [DisplayForm(Name = "Мова", RelatedData = "api/language")]
+        [DisplayForm(Name = "Мова", RelatedData = "api/language/getall")]
         public int LanguageId { get; set; }
         [ForeignKey("LanguageId")]
         public Language Language { get; set; }
