@@ -24,6 +24,7 @@ namespace SchoolMeals.Controllers
         {
             return new JsonResult(await _repository.GetAllAsync());
         }
+        [AllowAnonymous]
         public async Task<IActionResult> AddLanguages()
         {
             await _repository.CreateRange(new List<Language> { 
