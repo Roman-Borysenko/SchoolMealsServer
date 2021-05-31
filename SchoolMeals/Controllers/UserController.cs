@@ -52,10 +52,13 @@ namespace SchoolMeals.Controllers
         [AllowAnonymous]
         public async Task<bool> CreateUser()
         {
+            var role = await _roleManager.FindByNameAsync(RolesTypes.Admin);
+
             User user = new User 
             { 
                 UserName = "Admin",
-                Email = "admin@gmail.com"
+                Email = "admin@gmail.com",
+                RoleId = role.Id
             };
 
             try
