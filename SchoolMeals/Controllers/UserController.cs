@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SchoolMeals.Enums;
 using SchoolMeals.Extensions;
@@ -212,22 +213,22 @@ namespace SchoolMeals.Controllers
             return new JsonResult(user);
         }
         [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.HeadTeacher)]
-        public JsonResult GetForAdmin(int skip, int take, string lang = "ua")
+        public async Task<JsonResult> GetForAdmin(int skip, int take, string lang = "ua")
         {
             DataAndQuantity<IEnumerable<User>> result = new DataAndQuantity<IEnumerable<User>>
             {
-                Quantity = _userManager.Users.Count(),
-                Data = _userManager.Users.Select(_adminService.SelectUser()).Skip(skip).Take(take).ToList()
+                Quantity = await _userManager.Users.CountAsync(),
+                Data = await _userManager.Users.Skip(skip).Take(take).ToListAsync()
             };
 
             return new JsonResult(result);
         }
-        [Authorize(Roles = RolesTypes.Admin)]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist + "," + RolesTypes.Teacher + "," + RolesTypes.Director + "," + RolesTypes.HeadTeacher + "," + RolesTypes.CookingService)]
         public int UserCount()
         {
             return _userManager.Users.Count();
         }
-        [Authorize(Roles = RolesTypes.Admin)]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist + "," + RolesTypes.Teacher + "," + RolesTypes.Director + "," + RolesTypes.HeadTeacher + "," + RolesTypes.CookingService)]
         public int UserWithDiseasesCount()
         {
             return _userManager.Users.MultiInclude(u => u.DiseaseUsers).Where(u => u.DiseaseUsers != null && u.DiseaseUsers.Count > 0).Count();

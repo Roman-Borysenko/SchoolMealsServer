@@ -95,17 +95,17 @@ namespace SchoolMeals.Controllers
 
             return new JsonResult(result);
         }
-        [Authorize(Roles = RolesTypes.Admin)]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist + "," + RolesTypes.Teacher + "," + RolesTypes.Director + "," + RolesTypes.HeadTeacher + "," + RolesTypes.CookingService)]
         public async Task<int> OrderCount()
         {
             return await _repository.Count(o => true);
         }
-        [Authorize(Roles = RolesTypes.Admin)]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist + "," + RolesTypes.Teacher + "," + RolesTypes.Director + "," + RolesTypes.HeadTeacher + "," + RolesTypes.CookingService)]
         public async Task<int> TodayOrderCount()
         {
             return await _repository.Count(o => o.CreateAt > DateTime.Today);
         }
-        [Authorize(Roles = RolesTypes.Admin)]
+        [Authorize(Roles = RolesTypes.Admin + "," + RolesTypes.Nutritionist + "," + RolesTypes.Teacher + "," + RolesTypes.Director + "," + RolesTypes.HeadTeacher + "," + RolesTypes.CookingService)]
         public async Task<JsonResult> StatisticsForCurrentYear(CurrentYearStatisticRequest data)
         {
             List<CurrentYearStatisticResponse> response = new List<CurrentYearStatisticResponse>();
