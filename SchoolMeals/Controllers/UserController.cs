@@ -49,8 +49,15 @@ namespace SchoolMeals.Controllers
             _jwt = jwt;
         }
         [HttpPost]
-        public async Task<bool> CreateUser(User user)
+        [AllowAnonymous]
+        public async Task<bool> CreateUser()
         {
+            User user = new User 
+            { 
+                UserName = "Admin",
+                Email = "admin@gmail.com"
+            };
+
             try
             {
                 await _userManager.CreateAsync(user, "Schoolmeals1.");
