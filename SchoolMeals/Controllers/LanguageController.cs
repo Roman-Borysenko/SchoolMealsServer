@@ -24,5 +24,26 @@ namespace SchoolMeals.Controllers
         {
             return new JsonResult(await _repository.GetAllAsync());
         }
+        public async Task<IActionResult> AddLanguages()
+        {
+            await _repository.CreateRange(new List<Language> { 
+                new Language 
+                { 
+                    Name = "Українська",
+                    NameAbbreviation = "UA",
+                    Slug = "ukrainian",
+                    Default = true
+                },
+                new Language
+                {
+                    Name = "English",
+                    NameAbbreviation = "EN",
+                    Slug = "english",
+                    Default = false
+                }
+            });
+
+            return Ok();
+        }
     }
 }
