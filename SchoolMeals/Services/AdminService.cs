@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using SchoolMeals.Enums;
 using SchoolMeals.Extensions;
 using SchoolMeals.Models;
@@ -20,20 +21,25 @@ namespace SchoolMeals.Services
     {
         private readonly IWebHostEnvironment _hostEnvironment;
         private UserManager<User> _userManager;
-        public AdminService(IWebHostEnvironment hostEnvironment, UserManager<User> userManager)
+        ILogger<AdminService> _logger;
+        public AdminService(IWebHostEnvironment hostEnvironment, ILogger<AdminService> logger, UserManager<User> userManager)
         {
             _hostEnvironment = hostEnvironment;
+            _logger = logger;
             _userManager = userManager;
         }
         private string SaveImages(Dictionary<ImageSize, string> images, SectionSite section)
         {
             string fileName = Guid.NewGuid().ToString().ToLower();
             string folder = Path.Combine(_hostEnvironment.WebRootPath, "images", section.ToString().ToLower());
+            _logger.LogDebug(fileName);
+            _logger.LogDebug(folder);
 
             try 
             {
                 foreach (KeyValuePair<ImageSize, string> image in images)
                 {
+                    _logger.LogDebug(image.Key.ToString());
                     Match match = Regex.Match(image.Value, "data:image/([a-z]{3,4});base64,");
 
                     if(match.Success)
@@ -52,6 +58,7 @@ namespace SchoolMeals.Services
                 }
             } catch(Exception e)
             {
+                _logger.LogError(e.ShowError());
                 return null;
             }
 
