@@ -29,7 +29,6 @@ namespace SchoolMeals.Models
         [Required]
         [DisplayForm(Name = "Зображення")]
         [DataType(CustomDataType.Image)]
-        [StringLength(120, MinimumLength = 6)]
         public string Image { get; set; }
         [JsonIgnore]
         public string AuthorId { get; set; }

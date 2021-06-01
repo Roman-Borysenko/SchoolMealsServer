@@ -30,7 +30,6 @@ namespace SchoolMeals.Models
         public bool IsRecommend { get; set; }
         [DisplayForm(Name = "Зображення")]
         [DataType(CustomDataType.Image)]
-        [Required, StringLength(256, MinimumLength = 2)]
         public string Image { get; set; }
         [Required, Range(1, 1000000)]
         [DataType(CustomDataType.List)]
