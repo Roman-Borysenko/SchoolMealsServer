@@ -32,14 +32,14 @@ namespace SchoolMeals.Services
         {
             string fileName = Guid.NewGuid().ToString().ToLower();
             string folder = Path.Combine(_hostEnvironment.WebRootPath, "images", section.ToString().ToLower());
-            _logger.LogDebug(fileName);
-            _logger.LogDebug(folder);
+            _logger.LogInformation(fileName);
+            _logger.LogInformation(folder);
 
             try 
             {
                 foreach (KeyValuePair<ImageSize, string> image in images)
                 {
-                    _logger.LogDebug(image.Key.ToString());
+                    _logger.LogInformation(image.Key.ToString());
                     Match match = Regex.Match(image.Value, "data:image/([a-z]{3,4});base64,");
 
                     if(match.Success)
